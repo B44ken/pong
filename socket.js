@@ -68,20 +68,18 @@ const gameTick = (ID) => {
 
 
 const server = new ws.Server({ port: 81 }) 
-
 server.on('connection', socket => {
     paddles = paddles.filter(p => (Date.now() - p.lastMsg) < config.serverTimeout)
-
-    if(!paddles[0]) {
+    
+    if(!paddles[0] && !paddles[1]) {
         paddles[0] = {y: 0.5, spd: 0, socket: socket, lastMsg: Date.now()}
         var ID = 0
     }
-    else if(!paddles[1] && paddles[0]) {
+    else if(!paddles[1]) {
         paddles[1] = {y: 0.5, spd: 0, socket: socket, lastMsg: Date.now()}
         var ID = 1
     }
     else { ID = null }
-    
     
     socket.on('message', (text) => {
         message = JSON.parse(text)
@@ -94,7 +92,6 @@ server.on('connection', socket => {
     socket.send(JSON.stringify({"event": "start", "ID": ID, ...config})) 
     
     setInterval(() => {
-        socket.send(gameTick(ID + started))
-        started = 1
+        socket.send(gameTick(ID))
     }, 1000/config.tickRate)
 })
