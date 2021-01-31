@@ -1,10 +1,8 @@
-
-var text = ''
-
-const FPS = 60
-setInterval(() => {
-    ball.x += vx / FPS
-    ball.y += vy / FPS
-    if(text) drawText(text)
-    text = ''
-}, 1000/60)
+var p1, p2, ball
+function processGameTick(message) {
+    p1y=message.players[0].y;
+    p2y=message.players[1].y;
+    bx=message.ball.x;
+    by=message.ball.y;
+    return p1y, p2y, bx, by;
+}
