@@ -1,26 +1,32 @@
 const ws = new WebSocket("ws://localhost:81")
 
-const tickRate = 5
+const tickRate = 15
 var debug = false
 
 ws.addEventListener('open', () => {
     console.log('socket connected')
     setInterval(serverTick, 1000/tickRate)
 })
-
+var p1y, p2y, blx, bly;
+window.p1y=0;
+window.p2y=0;
+window.blx=0;
+window.bly=0;
 ws.addEventListener('message', (response) => {
     var message = JSON.parse(response.data)
 
-    if(message.type == 'debug' || debug) {
+    if(message.event == 'debug' || debug) {
         console.log(message)
     }
-    if(message.type == 'message' || debug) {
+    if(message.event == 'message' || debug) {
         text += message.content + '\n'
     }
-    if(message.type == 'gameTick') {
+    if(message.event == 'gameTick') {
         // update game if necessary
+        p1y, p2y, blx, bly = processGameTick(message);
+
     }
-    if(message.type == 'start') {
+    if(message.event == 'start') {
         // start the game
     }
 })
