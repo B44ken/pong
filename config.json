@@ -1,5 +1,5 @@
 {
-    "tickRate": 60,
+    "tickRate": 1,
     "ballSize": 0.05,
     "paddle1Pos": 0.1,
     "paddle2Pos": 0.9,

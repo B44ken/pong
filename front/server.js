@@ -1,11 +1,9 @@
 const ws = new WebSocket('ws://' + location.host + ':81')
 
-const tickRate = 15
 var debug = false
 
 ws.addEventListener('open', () => {
     console.log('socket connected')
-    setInterval(serverTick, 1000/tickRate)
 })
 var p1y, p2y, blx, bly;
 var config = {}
@@ -19,7 +17,7 @@ ws.addEventListener('message', (response) => {
     if(message.event == 'debug' || debug) {
         console.log(message)
     }
-    if(message.event == 'message' || debug) {
+    if(message.event == 'message') {
         text += message.content + '\n'
     }
     if(message.event == 'gameTick') {
@@ -31,6 +29,7 @@ ws.addEventListener('message', (response) => {
         // start the game
         delete message.event
         config = message
+        setInterval(serverTick, 1000 / config.tickRate)
     }
 })
 
