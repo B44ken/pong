@@ -4,27 +4,23 @@ const tickRate = 5
 var debug = false
 
 ws.addEventListener('open', () => {
+    console.log('socket connected')
     setInterval(serverTick, 1000/tickRate)
 })
 
-var ID = 0
 ws.addEventListener('message', (response) => {
     var message = JSON.parse(response.data)
 
-    if(message.event == 'connect') {
-        ID = message.ID
-    }
-
-    if(message.event == 'debug' || debug) {
+    if(message.type == 'debug' || debug) {
         console.log(message)
     }
-    if(message.event == 'message' || debug) {
+    if(message.type == 'message' || debug) {
         text += message.content + '\n'
     }
-    if(message.event == 'gameTick') {
+    if(message.type == 'gameTick') {
         // update game if necessary
     }
-    if(message.event == 'start') {
+    if(message.type == 'start') {
         // start the game
     }
 })
