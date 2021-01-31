@@ -1,4 +1,4 @@
-const tickRate = 4
+const tickRate = 60
 
 const express = require('express');
 const ws = require('ws')
@@ -12,7 +12,7 @@ var players = []
 
 const clamp = (min, v, max) => Math.max(min, Math.min(max, v))
 
-const speed = 0.05 / tickRate
+const speed = 0.3 / tickRate
 const gameTick = () => {
     players[0].y = clamp(0, players[0].spd * speed + players[0].y, 1)
     if(players[1]) players[1].y = 

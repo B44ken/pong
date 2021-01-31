@@ -1,4 +1,4 @@
-const ws = new WebSocket("ws://localhost:81")
+const ws = new WebSocket('ws://' + location.host + ':81')
 
 const tickRate = 15
 var debug = false

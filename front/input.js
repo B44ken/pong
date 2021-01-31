@@ -1,11 +1,6 @@
 document.addEventListener('keydown', (e) => {
-    if(e.key == "w") ws.send(JSON.stringify({
-        "event": "input", "spd": 1
-    }))
-    if(e.key == "s") ws.send(JSON.stringify({
-        "event": "input", "spd": -1
-    }))
-    if(e.key == "q") ws.send(JSON.stringify({
-        "event": "input", "spd": 0
+    var spd = {"w": -1, "s": 1, "q": 0}[e.key]
+    if(spd) ws.send(JSON.stringify({
+        "event": "input", "spd": spd
     }))
 })
