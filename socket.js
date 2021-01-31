@@ -10,9 +10,9 @@ var paddles = []
 score = [0,0]
 var ball = { "x": 0.5, "y": 0.5, "dirX": -1, "dirY": 1 }
 var gameState = null
+var started = 0
 
 const gameTick = (ID) => {
-    console.log(ID)
     if(ID != 0) return JSON.stringify(gameState)
 
     var scores = {"p1": 0, "p2": 0};
@@ -94,6 +94,7 @@ server.on('connection', socket => {
     socket.send(JSON.stringify({"event": "start", "ID": ID, ...config})) 
     
     setInterval(() => {
-        socket.send(gameTick(ID))
+        socket.send(gameTick(ID + started))
+        started = 1
     }, 1000/config.tickRate)
 })
