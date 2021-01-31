@@ -12,7 +12,11 @@ const gameTick = () => {
     return JSON.stringify({
         "event": "gameTick",
         "p1": { "y": randomTen() }, 
-        "p2": { "y": randomTen() }
+        "p2": { "y": randomTen() },
+        "ball": { 
+            "x": randomTen(), 
+            "y": randomTen()
+        }
     })
 }
 
