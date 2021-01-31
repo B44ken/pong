@@ -7,3 +7,8 @@ app.use(express.static('front'))
 app.listen(80, () => console.log('up!'))
 
 const server = new ws.Server({ port: 81 }) 
+server.on('connection', socket => {
+    socket.on('message', () => {
+    })
+    socket.send(JSON.stringify({"event": "debug", "message": "hello, world!"}))
+})
