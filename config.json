@@ -1,9 +1,10 @@
 {
     "tickRate": 60,
     "ballSize": 0.05,
-    "ballSpeed": 0.285,
+    "ballSpeed": 0.37,
     "paddle1Pos": 0.1,
     "paddle2Pos": 0.9,
     "paddleWidth": 0.03,
-    "paddleHeight": 0.25
+    "paddleHeight": 0.25,
+    "serverTimeout": 2500
 }

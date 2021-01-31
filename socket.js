@@ -7,11 +7,14 @@ const randomTen = () => Math.round(Math.random() * 10) / 10
 
 const speed = 0.3 / config.tickRate
 var paddles = []
+score = [0,0]
 var ball = { "x": 0.5, "y": 0.5, "dirX": -1, "dirY": 1 }
 var gameState = null
 
 const gameTick = (ID) => {
-    if(ID != 0) return gameState
+    console.log(ID)
+    if(ID != 0) return JSON.stringify(gameState)
+
     var scores = {"p1": 0, "p2": 0};
     var p1 = {"y": 0, "spd": 0}
     p1.y = paddles[0].y
@@ -32,35 +35,34 @@ const gameTick = (ID) => {
 
     if(ball.y < 0) {
         ball.y = 0.5
-        ball.dirY = 1
+        ball.dirY = clamp(0.2, Math.random(), 0.8)
         scores.p2+=1
-        updatescore(scores);
+        score[0]++
     }
     if(ball.y > 1) {
         ball.y = 0.5
-        ball.dirY = -1
+        ball.dirY = -clamp(0.2, Math.random(), 0.8)
         scores.p1+=1
-        updatescore(scores);
+        score[1]++
     }
     if (ball.y > config.paddle1Pos && ball.y < config.paddle1Pos + config.paddleWidth) {
         if (ball.x+(config.ballSize/2) > paddles[0].y && ball.x+(config.ballSize/2) < paddles[0].y + config.paddleHeight) {
             ball.dirY = 1;
-            console.log("paddle1")
         }
     } else if (paddles[1] && ball.y+config.ballSize > config.paddle2Pos && ball.y+config.ballSize < config.paddle2Pos + config.paddleWidth) {
         if (ball.x > paddles[1].y && ball.x < paddles[1].y + config.paddleHeight) {
             ball.dirY = -1;
-            console.log("paddle2")
         }
 }
 
 
-    gameState = JSON.stringify({
+    gameState = {
         "event": "gameTick",
         "paddles": [ p1, p2 ],
-        ball: { x: ball.y, y: ball.x }
-    })
-    return gameState
+        "ball": { x: ball.y, y: ball.x },
+        "score": score.join(' - ')
+    }
+    return JSON.stringify(gameState)
 }
 
 
@@ -68,22 +70,29 @@ const gameTick = (ID) => {
 const server = new ws.Server({ port: 81 }) 
 
 server.on('connection', socket => {
-    if(paddles.length < 2) {
-        paddles.push({y: 0.5, spd: 0, socket: socket})
-        var ID = paddles.length - 1
-    } else { ID = null }
+    paddles = paddles.filter(p => (Date.now() - p.lastMsg) < config.serverTimeout)
 
-    console.log(paddles.map(s => s.socket.isAlive ))
+    if(!paddles[0]) {
+        paddles[0] = {y: 0.5, spd: 0, socket: socket, lastMsg: Date.now()}
+        var ID = 0
+    }
+    else if(!paddles[1] && paddles[0]) {
+        paddles[1] = {y: 0.5, spd: 0, socket: socket, lastMsg: Date.now()}
+        var ID = 1
+    }
+    else { ID = null }
+    
     
     socket.on('message', (text) => {
         message = JSON.parse(text)
-        if(message.event == "input" && ID != null) {
+        if(message.event == "keepAlive" && ID != null)
+            paddles[ID].lastMsg = Date.now()
+        if(message.event == "input" && ID != null)
             paddles[ID].spd = message.spd
-        }
     })
-
+    
     socket.send(JSON.stringify({"event": "start", "ID": ID, ...config})) 
-
+    
     setInterval(() => {
         socket.send(gameTick(ID))
     }, 1000/config.tickRate)

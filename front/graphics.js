@@ -4,17 +4,8 @@ const context = canvas.getContext('2d');
 canvas.height = innerHeight;
 canvas.width = innerWidth;
 context.fillStyle = "#abc";
-function drawstuff() {
-
-    setInterval (function () {
-        player1.y = p1y;
-        player2.y = p2y;
-        context.clearRect(0,0,innerWidth,innerHeight);
-        player1.update();
-        player2.update();
-        ball1.update();
-        }, 20);
-    }
+context.font = "60px Courier New";
+context.textAlign = "center"
 
 const drawPaddle = (x, y) => {
     context.fillRect(
@@ -30,7 +21,7 @@ const drawBall = (x, y) => {
         x * innerWidth, 
         y * innerHeight, s, s)
 }
-function updatescore(scores) {
-    context.font = "30px Arial";
-    context.fillText(scores.p1,"||",scores.p2,innerWidth/2, 25);
+
+const drawScore = score => {
+    context.fillText(score, innerWidth/2, innerHeight/2);
 }

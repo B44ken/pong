@@ -30,6 +30,9 @@ ws.addEventListener('message', (response) => {
         config = message;
         // drawstuff();
         setInterval(serverTick, 1000 / config.tickRate);
+        setInterval(() => {
+            ws.send(JSON.stringify({"event": "keepAlive"}))
+        }, 250)
     }
 })
 
@@ -40,4 +43,6 @@ const serverTick = () => {
     drawPaddle(config.paddle1Pos, gameState.paddles[0].y)
     drawPaddle(config.paddle2Pos, gameState.paddles[1].y)
     drawBall(gameState.ball.x, gameState.ball.y)
+    drawScore(gameState.score)
 }
+
