@@ -19,14 +19,16 @@ ws.addEventListener('message', (response) => {
     }
     if(message.event == 'gameTick') {
         // update game if necessary
-        p1y, p2y, blx, bly = processGameTick(message);
-
+        // p1y, p2y, blx, bly = processGameTick(message);
+        delete message.event
+        gameState = message
+        
     }
     if(message.event == 'start') {
         // start the game
         delete message.event;
         config = message;
-        drawstuff();
+        // drawstuff();
         setInterval(serverTick, 1000 / config.tickRate);
     }
 })
@@ -34,5 +36,8 @@ ws.addEventListener('message', (response) => {
 var tick = 0
 const serverTick = () => {
     tick++
-    // ws.send(JSON.stringify({ tick: tick }))
+    context.clearRect(0, 0, innerWidth, innerHeight)
+    drawPaddle(config.paddle1Pos, gameState.paddles[0].y)
+    drawPaddle(config.paddle2Pos, gameState.paddles[1].y)
+    drawBall(gameState.ball.x, gameState.ball.y)
 }
