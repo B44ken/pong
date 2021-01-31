@@ -1,3 +1,5 @@
+const tickRate = 4
+
 const express = require('express');
 const ws = require('ws')
 
@@ -8,8 +10,14 @@ app.listen(80, () => console.log('up!'))
 
 var players = []
 
+const clamp = (min, v, max) => Math.max(min, Math.min(max, v))
+
+const speed = 0.05 / tickRate
 const gameTick = () => {
-    
+    players[0].y = clamp(0, players[0].spd * speed + players[0].y, 1)
+    if(players[1]) players[1].y = 
+        clamp(0, players[1].spd * speed + players[1].y, 1)
+
     const randomTen = e => Math.round(Math.random() * 10) / 10
     return JSON.stringify({
         "event": "gameTick",
@@ -25,7 +33,6 @@ const gameTick = () => {
 
 const server = new ws.Server({ port: 81 }) 
 
-var tickRate = 4
 server.on('connection', socket => {
     if(players.length < 2) {
         players.push({y: 0.5, spd: 0, socket: 'connected'})
