@@ -18,8 +18,8 @@ function drawstuff() {
 
 const drawPaddle = (x, y) => {
     context.fillRect(
-        x * innerHeight, 
-        y * innerWidth, 
+        x * innerWidth, 
+        y * innerHeight, 
         config.paddleWidth * innerWidth,
         config.paddleHeight * innerHeight)
 }

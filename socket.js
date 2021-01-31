@@ -39,6 +39,20 @@ const gameTick = (ID) => {
         ball.dirY = -1
     }
 
+    if (ball.x > config.paddle1Pos && ball.x < config.paddle1Pos + config.paddleWidth) {
+        if (ball.y > paddles[0].y && ball.y < paddles[0].y + config.paddleHeight) {
+            ball.dirY = 1;
+            console.log("paddle1")
+        }
+    } if (paddles[1]!=null) { 
+        if (ball.x > config.paddle2Pos && ball.x < config.paddle2Pos + config.paddleWidth) {
+        if (ball.y > paddles[1].y && ball.y < paddles[1].y + config.paddleHeight) {
+            ball.dirY = -1;
+            console.log("paddle2")
+        }
+    }
+}
+
 
     gameState = JSON.stringify({
         "event": "gameTick",
