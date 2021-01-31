@@ -1,7 +1,7 @@
 {
     "tickRate": 60,
     "ballSize": 0.05,
-    "ballSpeed": 0.4,
+    "ballSpeed": 0.285,
     "paddle1Pos": 0.1,
     "paddle2Pos": 0.9,
     "paddleWidth": 0.03,

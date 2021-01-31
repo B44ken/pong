@@ -30,3 +30,7 @@ const drawBall = (x, y) => {
         x * innerWidth, 
         y * innerHeight, s, s)
 }
+function updatescore(scores) {
+    context.font = "30px Arial";
+    context.fillText(scores.p1,"||",scores.p2,innerWidth/2, 25);
+}

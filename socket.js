@@ -12,7 +12,7 @@ var gameState = null
 
 const gameTick = (ID) => {
     if(ID != 0) return gameState
-    
+    var scores = {"p1": 0, "p2": 0};
     var p1 = {"y": 0, "spd": 0}
     p1.y = paddles[0].y
     p1.spd = paddles[0].spd
@@ -33,24 +33,25 @@ const gameTick = (ID) => {
     if(ball.y < 0) {
         ball.y = 0.5
         ball.dirY = 1
+        scores.p2+=1
+        updatescore(scores);
     }
     if(ball.y > 1) {
         ball.y = 0.5
         ball.dirY = -1
+        scores.p1+=1
+        updatescore(scores);
     }
-
-    if (ball.x > config.paddle1Pos && ball.x < config.paddle1Pos + config.paddleWidth) {
-        if (ball.y > paddles[0].y && ball.y < paddles[0].y + config.paddleHeight) {
+    if (ball.y > config.paddle1Pos && ball.y < config.paddle1Pos + config.paddleWidth) {
+        if (ball.x+(config.ballSize/2) > paddles[0].y && ball.x+(config.ballSize/2) < paddles[0].y + config.paddleHeight) {
             ball.dirY = 1;
             console.log("paddle1")
         }
-    } if (paddles[1]!=null) { 
-        if (ball.x > config.paddle2Pos && ball.x < config.paddle2Pos + config.paddleWidth) {
-        if (ball.y > paddles[1].y && ball.y < paddles[1].y + config.paddleHeight) {
+    } else if (paddles[1] && ball.y+config.ballSize > config.paddle2Pos && ball.y+config.ballSize < config.paddle2Pos + config.paddleWidth) {
+        if (ball.x > paddles[1].y && ball.x < paddles[1].y + config.paddleHeight) {
             ball.dirY = -1;
             console.log("paddle2")
         }
-    }
 }
 
 
