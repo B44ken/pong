@@ -8,6 +8,7 @@ ws.addEventListener('open', () => {
     setInterval(serverTick, 1000/tickRate)
 })
 var p1y, p2y, blx, bly;
+var config = {}
 window.p1y=0;
 window.p2y=0;
 window.blx=0;
@@ -28,6 +29,8 @@ ws.addEventListener('message', (response) => {
     }
     if(message.event == 'start') {
         // start the game
+        delete message.event
+        config = message
     }
 })
 

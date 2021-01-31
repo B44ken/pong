@@ -1,0 +1,8 @@
+{
+    "tickRate": 60,
+    "ballSize": 0.05,
+    "paddle1Pos": 0.1,
+    "paddle2Pos": 0.9,
+    "paddleWidth": 0.03,
+    "paddleHeight": 0.25
+}
